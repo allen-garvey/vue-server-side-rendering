@@ -1,46 +1,4 @@
-const path = require('path');
-const nodeExternals = require('webpack-node-externals');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const serverConfig = require('./server.config');
+const clientConfig = require('./client.config');
 
-module.exports = {
-    target: 'node',
-    node: {
-        __dirname: true,
-    },
-    mode: 'development',
-    entry: {
-        'server': path.join(__dirname, '..', 'build', 'index.js')
-    },
-    output: {
-        path: path.join(__dirname, '..', 'dist'),
-    },
-    module: {
-        rules: [
-            {
-                test: /\.vue$/,
-                loader: 'vue-loader'
-            },
-            {
-                test: /\.scss$/,
-                use: [
-                    'vue-style-loader',
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            modules: {
-                                localIdentName: '[local]_[hash:base64:8]',
-                            },
-                        }
-                    },
-                    {
-                        loader: 'sass-loader',
-                    },
-                ]
-            },
-        ]
-    },
-    externals: [nodeExternals()],
-    plugins: [
-        new VueLoaderPlugin(),
-    ],
-};
+module.exports = [serverConfig, clientConfig];

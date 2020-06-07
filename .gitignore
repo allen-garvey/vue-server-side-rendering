@@ -34,6 +34,7 @@ Thumbs.db
 *.swp
 *.csv
 dist/*
+public_html/*
 
 #Elixir phoenix dialyzer
 .elixir_ls/*
