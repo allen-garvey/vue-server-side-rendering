@@ -5,13 +5,14 @@ Experiment with Vue server side rendering
 ## Dependencies
 
 * node >= 10
-* 
+* make
 
 ## Getting Started
 
 * `npm install`
 * `npm run build`
-* `npm start`
+* `make`
+* Generated html is in `public_html`
 
 ## License
 
