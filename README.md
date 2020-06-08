@@ -10,9 +10,13 @@ Experiment with Vue server side rendering
 ## Getting Started
 
 * `npm install`
-* `npm run build`
 * `make`
-* Generated html is in `public_html`
+* Generated html and assets are in `public_html`
+
+## Live code reload for development
+
+* Run `npm run watch` and `npm start` at the same time
+* Site is served at http://localhost:3000/
 
 ## License
 

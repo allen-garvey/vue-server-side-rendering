@@ -8,8 +8,6 @@ const pageContext = {
 
 const renderer = require('vue-server-renderer').createRenderer({ template });
 
-renderer.renderToString(createApp(), pageContext).then(html => {
-  console.log(html);
-}).catch(err => {
-  console.error(err);
-})
+export default {
+    render: () => renderer.renderToString(createApp(), pageContext),
+};
