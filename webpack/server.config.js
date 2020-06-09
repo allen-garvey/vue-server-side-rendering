@@ -1,46 +1,35 @@
+const { exec } = require('child_process');
+const fs = require('fs');
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const { buildConfig } = require('./base.config');
 
-module.exports = {
-    target: 'node',
-    node: {
-        __dirname: true,
-    },
-    mode: 'development',
-    entry: {
-        build: path.join(__dirname, '..', 'build', 'build.js'),
-    },
-    output: {
-        path: path.join(__dirname, '..', 'dist'),
-    },
-    module: {
-        rules: [
-            {
-                test: /\.vue$/,
-                loader: 'vue-loader'
-            },
-            {
-                test: /\.scss$/,
-                use: [
-                    'vue-style-loader',
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            modules: {
-                                localIdentName: '[local]_[hash:base64:8]',
-                            },
-                        }
-                    },
-                    {
-                        loader: 'sass-loader',
-                    },
-                ]
-            },
-        ]
-    },
-    externals: [nodeExternals()],
-    plugins: [
-        new VueLoaderPlugin(),
-    ],
+const config = buildConfig();
+
+config.target = 'node';
+config.node = {
+    __dirname: true,
 };
+config.entry = {
+    build: path.join(__dirname, '..', 'build', 'build.js'),
+};
+config.output = {
+    path: path.join(__dirname, '..', 'dist'),
+};
+config.externals = [nodeExternals()];
+config.plugins.push({
+    apply: (compiler) => {
+      compiler.hooks.afterEmit.tap('BuildIndexHTMLPlugin', (compilation) => {
+        exec(`node ${__dirname}/../dist/build.js`, (err, stdout, stderr) => {
+          if (stdout) {
+              fs.writeFileSync(`${__dirname}/../public_html/index.html`, stdout);
+          }
+          if (stderr) {
+            console.error(stderr);
+          }
+        });
+      });
+    }
+});
+
+module.exports = config;
