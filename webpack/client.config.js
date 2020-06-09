@@ -1,4 +1,6 @@
+const { exec } = require('child_process');
 const path = require('path');
+const fs = require('fs');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
@@ -39,5 +41,19 @@ module.exports = {
     },
     plugins: [
         new VueLoaderPlugin(),
+        {
+            apply: (compiler) => {
+              compiler.hooks.afterEmit.tap('BuildIndexHTMLPlugin', (compilation) => {
+                exec(`node ${__dirname}/../dist/build.js`, (err, stdout, stderr) => {
+                  if (stdout) {
+                      fs.writeFileSync(`${__dirname}/../public_html/index.html`, stdout);
+                  }
+                  if (stderr) {
+                    console.error(stderr);
+                  }
+                });
+              });
+            }
+        },
     ],
 };
