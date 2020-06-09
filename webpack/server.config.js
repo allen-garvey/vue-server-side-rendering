@@ -10,7 +10,6 @@ module.exports = {
     mode: 'development',
     entry: {
         build: path.join(__dirname, '..', 'build', 'build.js'),
-        server: path.join(__dirname, '..', 'build', 'server.js'),
     },
     output: {
         path: path.join(__dirname, '..', 'dist'),
