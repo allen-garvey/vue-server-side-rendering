@@ -22,7 +22,9 @@ config.plugins.push({
       compiler.hooks.afterEmit.tap('BuildIndexHTMLPlugin', (compilation) => {
         exec(`node ${__dirname}/../dist/build.js`, (err, stdout, stderr) => {
           if (stdout) {
-              fs.writeFileSync(`${__dirname}/../public_html/index.html`, stdout);
+              const outDir = `${__dirname}/../public_html`;
+              fs.mkdirSync(outDir, {recursive: true});
+              fs.writeFileSync(`${outDir}/index.html`, stdout);
           }
           if (stderr) {
             console.error(stderr);
