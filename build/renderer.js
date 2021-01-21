@@ -1,13 +1,15 @@
-import { createApp } from '../src/index';
+import App from '../src/components/app.vue';
+const { createSSRApp } = require('vue');
+const { renderToString } = require('@vue/server-renderer');
 const fs = require('fs');
-const template = fs.readFileSync(`${__dirname}/../templates/index.template.html`, 'utf-8');
 
-const pageContext = {
-  title: 'Vue Server Rendering Test',
-};
-
-const renderer = require('vue-server-renderer').createRenderer({ template });
+const templateFileName = `${__dirname}/../templates/index.template.html`;
+const app = createSSRApp(App);
 
 export default {
-    render: () => renderer.renderToString(createApp(), pageContext),
+    render: () => 
+      Promise.all([
+        fs.promises.readFile(templateFileName, 'utf-8'),
+        renderToString(app)
+      ]).then(([templateHtml, appHtml]) => templateHtml.replace('<!--vue-ssr-outlet-->', appHtml))
 };

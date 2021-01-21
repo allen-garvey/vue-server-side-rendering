@@ -1,8 +1,4 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 import App from './components/app.vue';
 
-const app = new Vue({
-    render: h => h(App)
-});
-
-app.$mount('#app');
+createApp(App).mount('#app');

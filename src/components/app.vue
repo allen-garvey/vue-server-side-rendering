@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div>
         <h1>Welcome to my Vue app</h1>
         <div>Hello {{ name }}!</div>
         <button @click="buttonClicked()">Click me</button>
