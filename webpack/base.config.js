@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const { VueLoaderPlugin } = require('vue-loader');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 function buildConfig(){
     return {
@@ -12,20 +13,36 @@ function buildConfig(){
                 },
                 {
                     test: /\.scss$/,
-                    use: [
-                        'vue-style-loader',
+                    oneOf: [
+                        // this matches `<style module>`
                         {
-                            loader: 'css-loader',
-                            options: {
-                                modules: {
-                                    localIdentName: '[local]_[hash:base64:8]',
+                            resourceQuery: /module/,
+                            use: [
+                                'vue-style-loader',
+                                {
+                                    loader: 'css-loader',
+                                    options: {
+                                        esModule: false,
+                                        modules: {
+                                            localIdentName: '[local]_[hash:base64:8]',
+                                        },
+                                    }
                                 },
-                            }
+                                {
+                                    loader: 'sass-loader',
+                                },
+                            ]
                         },
                         {
-                            loader: 'sass-loader',
+                            use: [
+                                {
+                                    loader: MiniCssExtractPlugin.loader,
+                                },
+                                'css-loader',
+                                'sass-loader',
+                            ]
                         },
-                    ]
+                    ],
                 },
                 {
                     test: /\.ts$/,
@@ -42,6 +59,9 @@ function buildConfig(){
         },
         plugins: [
             new VueLoaderPlugin(),
+            new MiniCssExtractPlugin({
+                filename: './app.css',
+            }),
             new webpack.DefinePlugin({
                 __VUE_OPTIONS_API__: true,
                 __VUE_PROD_DEVTOOLS__: false,
