@@ -4,7 +4,7 @@ Experiment with Vue server side rendering
 
 ## Dependencies
 
-* node >= 10
+* node >= 16
 
 ## Getting Started
 
@@ -16,6 +16,10 @@ Experiment with Vue server side rendering
 
 * Run `npm run watch`
 * Run a local webserver with `public_html` as the base directory
+
+## Deployment
+
+* `npm run deploy`
 
 ## License
 
