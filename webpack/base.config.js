@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const { VueLoaderPlugin } = require('vue-loader');
 
 function buildConfig(){
@@ -26,10 +27,25 @@ function buildConfig(){
                         },
                     ]
                 },
+                {
+                    test: /\.ts$/,
+                    loader: 'ts-loader',
+                    exclude: /node_modules/,
+                    options: {
+                        appendTsSuffixTo: [/\.vue$/],
+                    },
+                },
             ]
+        },
+        resolve: {
+            extensions: ['.ts', '.js', '.vue', '.json'],
         },
         plugins: [
             new VueLoaderPlugin(),
+            new webpack.DefinePlugin({
+                __VUE_OPTIONS_API__: true,
+                __VUE_PROD_DEVTOOLS__: false,
+            }),
         ],
     };
 }

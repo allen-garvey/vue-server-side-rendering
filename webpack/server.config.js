@@ -11,7 +11,7 @@ config.node = {
     __dirname: true,
 };
 config.entry = {
-    build: path.join(__dirname, '..', 'build', 'build.js'),
+    build: path.join(__dirname, '..', 'build', 'build.ts'),
 };
 config.output = {
     path: path.join(__dirname, '..', 'dist'),
