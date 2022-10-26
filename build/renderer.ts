@@ -1,6 +1,8 @@
+import { createSSRApp } from 'vue';
+import { renderToString } from '@vue/server-renderer';
+
 import App from '../src/components/app.vue';
-const { createSSRApp } = require('vue');
-const { renderToString } = require('@vue/server-renderer');
+
 const fs = require('fs');
 
 const templateFileName = `${__dirname}/../templates/index.template.html`;
