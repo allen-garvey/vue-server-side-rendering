@@ -18,7 +18,9 @@ function buildConfig(){
                         {
                             resourceQuery: /module/,
                             use: [
-                                'vue-style-loader',
+                                {
+                                    loader: MiniCssExtractPlugin.loader,
+                                },
                                 {
                                     loader: 'css-loader',
                                     options: {
@@ -59,9 +61,7 @@ function buildConfig(){
         },
         plugins: [
             new VueLoaderPlugin(),
-            new MiniCssExtractPlugin({
-                filename: './app.css',
-            }),
+            new MiniCssExtractPlugin(),
             new webpack.DefinePlugin({
                 __VUE_OPTIONS_API__: true,
                 __VUE_PROD_DEVTOOLS__: false,
