@@ -4,34 +4,39 @@ const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const { buildConfig } = require('./base.config');
 
-const config = buildConfig();
+module.exports = (options) => {
+  const config = buildConfig(options);
 
-config.target = 'node';
-config.node = {
-    __dirname: true,
-};
-config.entry = {
-    build: path.join(__dirname, '..', 'build', 'build.ts'),
-};
-config.output = {
-    path: path.join(__dirname, '..', 'dist'),
-};
-config.externals = [nodeExternals()];
-config.plugins.push({
-    apply: (compiler) => {
-      compiler.hooks.afterEmit.tap('BuildIndexHTMLPlugin', (compilation) => {
-        exec(`node ${__dirname}/../dist/build.js`, (err, stdout, stderr) => {
-          if (stdout) {
-              const outDir = `${__dirname}/../public_html`;
-              fs.mkdirSync(outDir, {recursive: true});
-              fs.writeFileSync(`${outDir}/index.html`, stdout);
-          }
-          if (stderr) {
-            console.error(stderr);
-          }
+  config.target = 'node';
+  config.node = {
+      __dirname: true,
+  };
+  config.entry = {
+      app: path.join(__dirname, '..', 'src', 'components', 'app.vue'),
+  };
+  config.output = {
+      path: path.join(__dirname, '..', 'dist'),
+      library: {
+        type: 'commonjs2'
+      }
+  };
+  config.externals = [nodeExternals()];
+  config.plugins.push({
+      apply: (compiler) => {
+        compiler.hooks.afterEmit.tap('BuildIndexHTMLPlugin', (compilation) => {
+          exec(`node ${__dirname}/../build/build.js`, (err, stdout, stderr) => {
+            if (stdout) {
+                const outDir = `${__dirname}/../public_html`;
+                fs.mkdirSync(outDir, {recursive: true});
+                fs.writeFileSync(`${outDir}/index.html`, stdout);
+            }
+            if (stderr) {
+              console.error(stderr);
+            }
+          });
         });
-      });
-    }
-});
+      }
+  });
 
-module.exports = config;
+  return config;
+};

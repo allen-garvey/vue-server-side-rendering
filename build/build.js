@@ -1,4 +1,4 @@
-import renderer from './renderer';
+const renderer = require('./renderer.js');
 
 renderer.render().then(html => {
   console.log(html);
